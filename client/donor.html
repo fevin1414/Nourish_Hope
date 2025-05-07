@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Donor Dashboard</title>
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/navbar.css" />
   </head>
   <body>
     <nav class="navbar">
@@ -24,46 +23,48 @@
         <h1>Donor Dashboard</h1>
         <button id="logoutBtn">Logout</button>
       </header>
-      <div class="sidebar">
-        <button class="menu-btn active" data-section="orphanages">
-          Orphanages
-        </button>
-        <button class="menu-btn" data-section="my-donations">
-          My Donations
-        </button>
-        <button class="menu-btn" data-section="requests">Requests</button>
-      </div>
-      <div class="main-content">
-        <section id="orphanages" class="content-section active">
-          <h2>Select Orphanage</h2>
-          <table id="orphanageTable">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>Donate</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-          <div id="donationForms" class="hidden">
-            <h3 id="donationHeader"></h3>
-            <form id="donationForm"></form>
-            <button id="cancelDonation">Cancel</button>
-          </div>
-        </section>
-        <section id="my-donations" class="content-section">
-          <h2>My Donations</h2>
-          <div id="donationsList"></div>
-        </section>
-        <section id="requests" class="content-section">
-          <h2>Requests</h2>
-          <div id="requestsList"></div>
-        </section>
+      <div class="dashboard">
+        <div class="sidebar">
+          <button class="menu-btn active" data-section="orphanages">
+            Orphanages
+          </button>
+          <button class="menu-btn" data-section="my-donations">
+            My Donations
+          </button>
+          <button class="menu-btn" data-section="requests">Requests</button>
+        </div>
+        <div class="main-content">
+          <section id="orphanages" class="content-section active">
+            <h2>Select Orphanage</h2>
+            <table id="orphanageTable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Address</th>
+                  <th>Donate</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+            <div id="donationForms" class="hidden">
+              <h3 id="donationHeader"></h3>
+              <form id="donationForm"></form>
+              <button id="cancelDonation">Cancel</button>
+            </div>
+          </section>
+          <section id="my-donations" class="content-section">
+            <h2>My Donations</h2>
+            <div id="donationsList" class="food-list"></div>
+          </section>
+          <section id="requests" class="content-section">
+            <h2>Requests</h2>
+            <div id="requestsList" class="request-list"></div>
+          </section>
+        </div>
       </div>
     </div>
-    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
     <script src="js/donor.js"></script>
   </body>
 </html>

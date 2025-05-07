@@ -1,14 +1,41 @@
 document.addEventListener("DOMContentLoaded", () => {
   loadAllUsers();
+
+  document.querySelectorAll(".menu-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      switchSection(btn.dataset.section);
+
+      if (btn.dataset.section === "users") loadAllUsers();
+      if (btn.dataset.section === "donations") loadAllDonations();
+      if (btn.dataset.section === "all-requests") loadAllRequests();
+    });
+  });
 });
+
+function switchSection(sectionId) {
+  document.querySelectorAll(".content-section").forEach((section) => {
+    section.classList.remove("active");
+  });
+
+  document.querySelectorAll(".menu-btn").forEach((btn) => {
+    btn.classList.remove("active");
+  });
+
+  const selectedSection = document.getElementById(sectionId);
+  if (selectedSection) {
+    selectedSection.classList.add("active");
+  }
+
+  document
+    .querySelector(`.menu-btn[data-section="${sectionId}"]`)
+    ?.classList.add("active");
+}
 
 async function loadAllUsers() {
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch("/api/admin/users", {
-      headers: {
-        "x-auth-token": token,
-      },
+    const res = await fetch("http://localhost:5000/api/admin/users", {
+      headers: { "x-auth-token": token },
     });
 
     const users = await res.json();
@@ -29,11 +56,10 @@ async function loadAllUsers() {
           }</p>
           ${
             !user.verificationStatus
-              ? `<button class="action-btn verify-btn" onclick="verifyUser('${user._id}')">Verify User</button>`
+              ? `<button class="action-btn verify-btn" onclick="verifyUser('${user._id}')">Edit</button>`
               : ""
           }
         `;
-
         usersList.appendChild(userCard);
       });
     } else {
@@ -48,10 +74,8 @@ async function loadAllUsers() {
 async function loadAllDonations() {
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch("/api/food", {
-      headers: {
-        "x-auth-token": token,
-      },
+    const res = await fetch("http://localhost:5000/api/food", {
+      headers: { "x-auth-token": token },
     });
 
     const foods = await res.json();
@@ -97,10 +121,8 @@ async function loadAllDonations() {
 async function loadAllRequests() {
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch("/api/request", {
-      headers: {
-        "x-auth-token": token,
-      },
+    const res = await fetch("http://localhost:5000/api/request", {
+      headers: { "x-auth-token": token },
     });
 
     const requests = await res.json();
@@ -143,12 +165,13 @@ async function loadAllRequests() {
 async function verifyUser(userId) {
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch(`/api/admin/users/${userId}/verify`, {
-      method: "PUT",
-      headers: {
-        "x-auth-token": token,
-      },
-    });
+    const res = await fetch(
+      `http://localhost:5000/api/admin/users/${userId}/verify`,
+      {
+        method: "PUT",
+        headers: { "x-auth-token": token },
+      }
+    );
 
     if (res.ok) {
       alert("User verified successfully");
