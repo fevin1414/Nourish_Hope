@@ -35,4 +35,29 @@ router.post("/food", auth, async (req, res) => {
   res.json(f);
 });
 
+router.get("/food", auth, async (req, res) => {
+  try {
+    const foods = await Food.find({ orphanageId: req.user.id }).populate(
+      "donorId",
+      "name email"
+    );
+    res.json(foods);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+});
+
+router.get("/money", auth, async (req, res) => {
+  try {
+    const donations = await Donation.find({
+      orphanageId: req.user.id,
+    }).populate("donorId", "name email");
+    res.json(donations);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+});
+
 module.exports = router;

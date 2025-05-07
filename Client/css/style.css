@@ -315,3 +315,9 @@ header h1 {
     text-align: left;
   }
 }
+.donation-card {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+}

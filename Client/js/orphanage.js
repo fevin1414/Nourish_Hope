@@ -1,53 +1,70 @@
 document.addEventListener("DOMContentLoaded", () => {
-  loadAvailableFood();
-});
+  const token = localStorage.getItem("token");
+  document.getElementById("logoutBtn").onclick = () => {
+    localStorage.removeItem("token");
+    window.location.href = "index.html";
+  };
 
-async function loadAvailableFood() {
-  try {
-    const token = localStorage.getItem("token");
-    const res = await fetch("http://localhost:5000/api/food", {
+  document.querySelectorAll(".menu-btn").forEach((btn) => {
+    btn.onclick = () => {
+      document
+        .querySelectorAll(".menu-btn")
+        .forEach((b) => b.classList.remove("active"));
+      document
+        .querySelectorAll(".content-section")
+        .forEach((s) => s.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById(btn.dataset.section).classList.add("active");
+      if (btn.dataset.section === "received-food") loadReceivedFood();
+      if (btn.dataset.section === "received-money") loadReceivedMoney();
+    };
+  });
+
+  loadReceivedFood();
+
+  async function loadReceivedFood() {
+    const res = await fetch("http://localhost:5000/api/donations/food", {
       headers: { "x-auth-token": token },
     });
     const foods = await res.json();
-    const foodList = document.getElementById("foodList");
-    foodList.innerHTML = "";
-    foods.forEach((food) => {
-      if (food.status !== "available") return;
-      const card = document.createElement("div");
-      card.className = "food-card";
-      card.innerHTML = `
-        <h3>${food.foodType}</h3>
-        <p>Quantity: ${food.quantity}</p>
-        <p>Shelf Life: ${new Date(food.shelfLife).toLocaleDateString()}</p>
-        <p>Pickup: ${food.pickupLocation}</p>
-        <button onclick="requestFood('${food._id}')">Request Food</button>
-      `;
-      foodList.appendChild(card);
-    });
-  } catch {
-    alert("An error occurred");
-  }
-}
+    const container = document.getElementById("receivedFoodList");
+    container.innerHTML = "";
+    foods.forEach((f) => {
+      const div = document.createElement("div");
+      div.className = "donation-card";
+      div.innerHTML = `
+        <h3>${f.foodType}</h3>
+        <p><strong>Quantity:</strong> ${f.quantity}</p>
+        <p><strong>Shelf Life:</strong> ${new Date(
+          f.shelfLife
+        ).toLocaleDateString()}</p>
+        <p><strong>Pickup Location:</strong> ${f.pickupLocation}</p>
+        <p><strong>Donor:</strong> ${f.donorId.name} (${f.donorId.email})</p>
 
-async function requestFood(foodId) {
-  try {
-    const token = localStorage.getItem("token");
-    const res = await fetch("/api/request", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": token,
-      },
-      body: JSON.stringify({ foodId }),
+      `;
+      container.appendChild(div);
     });
-    if (res.ok) {
-      alert("Food requested successfully");
-      loadAvailableFood();
-    } else {
-      const data = await res.json();
-      alert(data.msg || "Failed to request food");
-    }
-  } catch {
-    alert("An error occurred");
   }
-}
+
+  async function loadReceivedMoney() {
+    const res = await fetch("http://localhost:5000/api/donations/money", {
+      headers: { "x-auth-token": token },
+    });
+    const donations = await res.json();
+    const container = document.getElementById("receivedMoneyList");
+    container.innerHTML = "";
+    donations.forEach((d) => {
+      const div = document.createElement("div");
+      div.className = "donation-card";
+      div.innerHTML = `
+        <p><strong>Amount:</strong> $${d.amount}</p>
+        <p><strong>Message:</strong> ${d.message || "–"}</p>
+        <p><strong>Donor:</strong> ${d.donorId.name} (${d.donorId.email})</p>
+        <p><strong>Date:</strong> ${new Date(
+          d.donatedAt
+        ).toLocaleDateString()}</p>
+      `;
+      container.appendChild(div);
+    });
+  }
+});

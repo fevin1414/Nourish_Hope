@@ -10,7 +10,7 @@ app.use("/api/auth", require("./routes/auth"));
 app.use("/api/food", require("./routes/food"));
 app.use("/api/request", require("./routes/request"));
 app.use("/api/orphanages", require("./routes/orphanages"));
-app.use("/api/donate", require("./routes/donations"));
+app.use("/api/donations", require("./routes/donations"));
 app.use("/api/admin", require("./routes/admin"));
 app.use(express.static(path.join(__dirname, "../Client")));
 const PORT = process.env.PORT || 5000;
