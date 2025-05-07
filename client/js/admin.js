@@ -87,12 +87,14 @@ function openEditUser(id, name, email, role, phone, address) {
   document.getElementById("editRole").value = role;
   document.getElementById("editPhone").value = phone;
   document.getElementById("editAddress").value = address;
-  document.getElementById("editUserModal").classList.remove("hidden");
+
+  // Fix: Use style.display instead of classList
+  document.getElementById("editUserModal").style.display = "block";
 }
 
-// Close the edit user modal
 function closeEditModal() {
-  document.getElementById("editUserModal").classList.add("hidden");
+  // Fix: Use style.display instead of classList
+  document.getElementById("editUserModal").style.display = "none";
   document.getElementById("editUserForm").reset();
   document.getElementById("editUserMsg").textContent = "";
 }

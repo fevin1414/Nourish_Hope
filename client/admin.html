@@ -6,6 +6,28 @@
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/navbar.css" />
+    <style>
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 100;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      .modal-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+        width: 50%;
+        border-radius: 5px;
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar">
@@ -98,8 +120,7 @@
       </div>
     </div>
 
-    <!-- Edit User Modal -->
-    <div id="editUserModal" class="modal hidden">
+    <div id="editUserModal" class="modal">
       <div class="modal-content">
         <h3>Edit User</h3>
         <form id="editUserForm">
@@ -118,8 +139,14 @@
             <option value="admin">Admin</option>
           </select>
           <input type="hidden" id="editUserId" />
-          <button type="submit" class="btn">Update</button>
-          <button type="button" onclick="closeEditModal()">Cancel</button>
+          <button type="submit" class="action-btn delete-btn">Update</button>
+          <button
+            type="button"
+            class="action-btn delete-btn"
+            onclick="closeEditModal()"
+          >
+            Cancel
+          </button>
         </form>
         <p id="editUserMsg" class="form-message"></p>
       </div>
