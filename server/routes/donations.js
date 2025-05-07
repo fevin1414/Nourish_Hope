@@ -23,11 +23,15 @@ router.post("/money", auth, async (req, res) => {
     await donation.save();
 
     const donor = await User.findById(req.user.id).select("phone");
-    console.log(donor.phone);
-    if (donor?.phone) {
-      await sendSMS(donor.phone, "Thanks for your money donation!");
-    }
+    const formattedPhone = donor.phone.startsWith("+91")
+      ? donor.phone
+      : `+91${donor.phone}`;
 
+    console.log("Sending SMS to:", formattedPhone);
+
+    if (donor?.phone) {
+      await sendSMS(formattedPhone, "Thanks for your money donation!");
+    }
     res.json(donation);
   } catch (error) {
     console.error("Error:", error);
@@ -50,9 +54,14 @@ router.post("/food", auth, async (req, res) => {
   });
   await f.save();
   const donor = await User.findById(req.user.id).select("phone");
-  console.log(donor.phone);
+  const formattedPhone = donor.phone.startsWith("+91")
+    ? donor.phone
+    : `+91${donor.phone}`;
+
+  console.log("Sending SMS to:", formattedPhone);
+
   if (donor?.phone) {
-    await sendSMS(donor.phone, "Thanks for your money donation!");
+    await sendSMS(formattedPhone, "Thanks for your money donation!");
   }
 
   res.json(f);
