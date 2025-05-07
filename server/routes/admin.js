@@ -20,9 +20,9 @@ router.put("/users/:id/verify", auth, isAdmin, async (req, res) => {
 });
 
 router.post("/addusers", auth, isAdmin, async (req, res) => {
-  const { name, email, password, role, phone } = req.body;
+  const { name, email, password, role, phone, address } = req.body;
 
-  if (!name || !email || !password || !role || !phone) {
+  if (!name || !email || !password || !role || !phone || !address) {
     return res.status(400).json({ msg: "Please provide all required fields." });
   }
 
@@ -40,6 +40,7 @@ router.post("/addusers", auth, isAdmin, async (req, res) => {
       password,
       role,
       phone,
+      address,
       verificationStatus: role === "admin" ? true : false,
     });
 

@@ -20,11 +20,12 @@ document.getElementById("addUserForm").addEventListener("submit", async (e) => {
   const password = document.getElementById("newPassword").value.trim();
   const role = document.getElementById("newRole").value;
   const phone = document.getElementById("newPhone").value.trim();
+  const address = document.getElementById("address").value.trim();
 
   const msgEl = document.getElementById("userAddMsg");
   msgEl.textContent = "";
 
-  if (!name || !email || !password || !role || !phone) {
+  if (!name || !email || !password || !role || !phone || !address) {
     msgEl.textContent = "All fields are required.";
     msgEl.style.color = "red";
     return;
@@ -39,7 +40,7 @@ document.getElementById("addUserForm").addEventListener("submit", async (e) => {
         "Content-Type": "application/json",
         "x-auth-token": token,
       },
-      body: JSON.stringify({ name, email, password, role, phone }),
+      body: JSON.stringify({ name, email, password, role, phone, address }),
     });
 
     const data = await res.json();
