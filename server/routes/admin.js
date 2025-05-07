@@ -53,6 +53,35 @@ router.post("/addusers", auth, isAdmin, async (req, res) => {
   }
 });
 
+router.put("/users/:id", auth, isAdmin, async (req, res) => {
+  const { name, email, role, phone, address } = req.body;
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ msg: "User not found" });
+
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.role = role || user.role;
+    user.phone = phone || user.phone;
+    user.address = address || user.address;
+
+    await user.save();
+    res.json({ msg: "User updated successfully" });
+  } catch (err) {
+    res.status(500).send("Server error");
+  }
+});
+
+router.delete("/users/:id", auth, isAdmin, async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) return res.status(404).json({ msg: "User not found" });
+    res.json({ msg: "User deleted successfully" });
+  } catch (err) {
+    res.status(500).send("Server error");
+  }
+});
+
 router.get("/food", auth, isAdmin, async (req, res) => {
   const foods = await Food.find().populate("donorId", "name email");
   res.json(foods);

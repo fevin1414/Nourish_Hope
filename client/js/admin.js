@@ -80,6 +80,72 @@ function switchSection(sectionId) {
     ?.classList.add("active");
 }
 
+function openEditUser(id, name, email, role, phone, address) {
+  document.getElementById("editUserId").value = id;
+  document.getElementById("editName").value = name;
+  document.getElementById("editEmail").value = email;
+  document.getElementById("editRole").value = role;
+  document.getElementById("editPhone").value = phone;
+  document.getElementById("editAddress").value = address;
+  document.getElementById("editUserModal").classList.remove("hidden");
+}
+
+// Close the edit user modal
+function closeEditModal() {
+  document.getElementById("editUserModal").classList.add("hidden");
+  document.getElementById("editUserForm").reset();
+  document.getElementById("editUserMsg").textContent = "";
+}
+
+document
+  .getElementById("editUserForm")
+  .addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const id = document.getElementById("editUserId").value;
+    const name = document.getElementById("editName").value.trim();
+    const email = document.getElementById("editEmail").value.trim();
+    const role = document.getElementById("editRole").value;
+    const phone = document.getElementById("editPhone").value.trim();
+    const address = document.getElementById("editAddress").value.trim();
+    const msgEl = document.getElementById("editUserMsg");
+
+    if (!name || !email || !role || !phone || !address) {
+      msgEl.textContent = "All fields are required.";
+      msgEl.style.color = "red";
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await fetch(`http://localhost:5000/api/admin/users/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
+        },
+        body: JSON.stringify({ name, email, role, phone, address }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        msgEl.textContent = "User updated successfully!";
+        msgEl.style.color = "green";
+        closeEditModal();
+        loadAllUsers();
+      } else {
+        msgEl.textContent = data.msg || "Failed to update user.";
+        msgEl.style.color = "red";
+      }
+    } catch (err) {
+      console.error(err);
+      msgEl.textContent = "An error occurred. Try again.";
+      msgEl.style.color = "red";
+    }
+  });
+
 async function loadAllUsers() {
   try {
     const token = localStorage.getItem("token");
@@ -103,11 +169,16 @@ async function loadAllUsers() {
           <p><strong>Status:</strong> ${
             user.verificationStatus ? "Verified" : "Not Verified"
           }</p>
-          ${
-            !user.verificationStatus
-              ? `<button class="action-btn verify-btn" onclick="verifyUser('${user._id}')">Edit</button>`
-              : ""
-          }
+          <p><strong>Phone:</strong> ${user.phone}</p>
+          <p><strong>Address:</strong> ${user.address}</p>
+          <button class="action-btn edit-btn" onclick="openEditUser('${
+            user._id
+          }', '${user.name}', '${user.email}', '${user.role}', '${
+          user.phone
+        }', '${user.address}')">Edit</button>
+          <button class="action-btn delete-btn" onclick="deleteUser('${
+            user._id
+          }')">Delete</button>
         `;
         usersList.appendChild(userCard);
       });
@@ -117,6 +188,32 @@ async function loadAllUsers() {
   } catch (err) {
     console.error(err);
     alert("An error occurred");
+  }
+}
+
+async function deleteUser(userId) {
+  if (!confirm("Are you sure you want to delete this user?")) return;
+
+  try {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`http://localhost:5000/api/admin/users/${userId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
+      },
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.msg || "Failed to delete user");
+    }
+
+    alert("User deleted successfully");
+    loadAllUsers();
+  } catch (err) {
+    console.error("Delete error:", err);
+    alert(err.message || "An error occurred while deleting user");
   }
 }
 
