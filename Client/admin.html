@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Admin Dashboard</h1>
+        <nav>
+          <button id="logoutBtn">Logout</button>
+        </nav>
+      </header>
+
+      <div class="dashboard">
+        <div class="sidebar">
+          <button class="menu-btn active" data-section="users">
+            User Management
+          </button>
+          <button class="menu-btn" data-section="donations">
+            All Donations
+          </button>
+          <button class="menu-btn" data-section="all-requests">
+            All Requests
+          </button>
+        </div>
+
+        <div class="main-content">
+          <section id="users" class="content-section active">
+            <h2>User Management</h2>
+            <div id="usersList" class="user-list"></div>
+          </section>
+
+          <section id="donations" class="content-section">
+            <h2>All Food Donations</h2>
+            <div id="donationsList" class="food-list"></div>
+          </section>
+
+          <section id="all-requests" class="content-section">
+            <h2>All Requests</h2>
+            <div id="allRequestsList" class="request-list"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+  </body>
+</html>

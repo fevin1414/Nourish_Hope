@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Donor Dashboard</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Donor Dashboard</h1>
+        <nav>
+          <button id="logoutBtn">Logout</button>
+        </nav>
+      </header>
+
+      <div class="dashboard">
+        <div class="sidebar">
+          <button class="menu-btn active" data-section="post-food">
+            Post Food
+          </button>
+          <button class="menu-btn" data-section="my-donations">
+            My Donations
+          </button>
+          <button class="menu-btn" data-section="requests">Requests</button>
+        </div>
+
+        <div class="main-content">
+          <section id="post-food" class="content-section active">
+            <h2>Post Available Food</h2>
+            <form id="foodForm">
+              <div class="form-group">
+                <label for="foodType">Food Type</label>
+                <input type="text" id="foodType" required />
+              </div>
+              <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="text" id="quantity" required />
+              </div>
+              <div class="form-group">
+                <label for="shelfLife">Shelf Life</label>
+                <input type="date" id="shelfLife" required />
+              </div>
+              <div class="form-group">
+                <label for="pickupLocation">Pickup Location</label>
+                <input type="text" id="pickupLocation" required />
+              </div>
+              <button type="submit" class="btn">Post Food</button>
+            </form>
+          </section>
+
+          <section id="my-donations" class="content-section">
+            <h2>My Donations</h2>
+            <div id="donationsList" class="food-list"></div>
+          </section>
+
+          <section id="requests" class="content-section">
+            <h2>Donation Requests</h2>
+            <div id="requestsList" class="request-list"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/donor.js"></script>
+  </body>
+</html>

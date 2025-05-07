@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orphanage Dashboard</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Orphanage Dashboard</h1>
+        <nav>
+          <button id="logoutBtn">Logout</button>
+        </nav>
+      </header>
+
+      <div class="dashboard">
+        <div class="sidebar">
+          <button class="menu-btn active" data-section="available-food">
+            Available Food
+          </button>
+          <button class="menu-btn" data-section="my-requests">
+            My Requests
+          </button>
+        </div>
+
+        <div class="main-content">
+          <section id="available-food" class="content-section active">
+            <h2>Available Food Donations</h2>
+            <div id="foodList" class="food-list"></div>
+          </section>
+
+          <section id="my-requests" class="content-section">
+            <h2>My Food Requests</h2>
+            <div id="requestsList" class="request-list"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/orphanage.js"></script>
+  </body>
+</html>
