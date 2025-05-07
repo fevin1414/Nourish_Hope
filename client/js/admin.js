@@ -12,6 +12,54 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+document.getElementById("addUserForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById("newName").value.trim();
+  const email = document.getElementById("newEmail").value.trim();
+  const password = document.getElementById("newPassword").value.trim();
+  const role = document.getElementById("newRole").value;
+  const phone = document.getElementById("newPhone").value.trim();
+
+  const msgEl = document.getElementById("userAddMsg");
+  msgEl.textContent = "";
+
+  if (!name || !email || !password || !role || !phone) {
+    msgEl.textContent = "All fields are required.";
+    msgEl.style.color = "red";
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch("http://localhost:5000/api/admin/addusers", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
+      },
+      body: JSON.stringify({ name, email, password, role, phone }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      msgEl.textContent = "User added successfully!";
+      msgEl.style.color = "green";
+      document.getElementById("addUserForm").reset();
+      loadAllUsers();
+    } else {
+      msgEl.textContent = data.msg || "Failed to add user.";
+      msgEl.style.color = "red";
+    }
+  } catch (err) {
+    console.error(err);
+    msgEl.textContent = "An error occurred. Try again.";
+    msgEl.style.color = "red";
+  }
+});
+
 function switchSection(sectionId) {
   document.querySelectorAll(".content-section").forEach((section) => {
     section.classList.remove("active");

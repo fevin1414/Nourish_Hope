@@ -19,6 +19,7 @@
         <a href="login.html" class="btn btn-outline">Login / Register</a>
       </div>
     </nav>
+
     <div class="container">
       <header>
         <h1>Admin Dashboard</h1>
@@ -41,8 +42,51 @@
         </div>
 
         <div class="main-content">
+          <!-- User Management Section -->
           <section id="users" class="content-section active">
             <h2>User Management</h2>
+
+            <!-- Add User Form -->
+            <div class="add-user-form">
+              <h3>Add New User</h3>
+              <form id="addUserForm">
+                <input
+                  type="text"
+                  id="newName"
+                  placeholder="Full Name"
+                  required
+                />
+                <input
+                  type="email"
+                  id="newEmail"
+                  placeholder="Email"
+                  required
+                />
+                <input
+                  type="password"
+                  id="newPassword"
+                  placeholder="Password"
+                  required
+                />
+                <input
+                  type="text"
+                  id="newPhone"
+                  placeholder="Phone Number"
+                  required
+                />
+
+                <select id="newRole" required>
+                  <option value="" disabled selected>Select Role</option>
+                  <option value="donor">Donor</option>
+                  <option value="orphanage">Orphanage</option>
+                  <option value="admin">Admin</option>
+                </select>
+
+                <button type="submit" class="btn">Add User</button>
+              </form>
+              <p id="userAddMsg" class="form-message"></p>
+            </div>
+
             <div id="usersList" class="user-list"></div>
           </section>
 
