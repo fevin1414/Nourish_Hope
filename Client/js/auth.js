@@ -83,14 +83,14 @@ if (registerForm) {
 if (logoutBtn) {
   logoutBtn.addEventListener("click", () => {
     localStorage.removeItem("token");
-    window.location.href = "index.html";
+    window.location.href = "login.html";
   });
 }
 document.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("token");
-  if (token && window.location.pathname.endsWith("index.html")) {
+  if (token && window.location.pathname.endsWith("login.html")) {
     window.location.href = "donor.html";
-  } else if (!token && !window.location.pathname.endsWith("index.html")) {
-    window.location.href = "index.html";
+  } else if (!token && !window.location.pathname.endsWith("login.html")) {
+    window.location.href = "login.html";
   }
 });
