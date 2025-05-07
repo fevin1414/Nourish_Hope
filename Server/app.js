@@ -12,6 +12,6 @@ app.use("/api/request", require("./routes/request"));
 app.use("/api/orphanages", require("./routes/orphanages"));
 app.use("/api/donations", require("./routes/donations"));
 app.use("/api/admin", require("./routes/admin"));
-app.use(express.static(path.join(__dirname, "../Client")));
+app.use(express.static(path.join(__dirname, "../client")));
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
