@@ -1,40 +1,33 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
+const isAdmin = require("../middleware/admin");
 const User = require("../models/User");
+const Food = require("../models/Food");
+const Request = require("../models/Request");
 
-router.get("/users", auth, async (req, res) => {
-  if (req.user.role !== "admin") {
-    return res.status(401).json({ msg: "Not authorized" });
-  }
-
-  try {
-    const users = await User.find();
-    res.json(users);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
-  }
+router.get("/users", auth, isAdmin, async (req, res) => {
+  const users = await User.find().select("-password");
+  res.json(users);
+});
+router.put("/users/:id/verify", auth, isAdmin, async (req, res) => {
+  const u = await User.findById(req.params.id);
+  if (!u) return res.status(404).json({ msg: "User not found" });
+  u.verificationStatus = true;
+  await u.save();
+  res.json({ msg: "User verified" });
 });
 
-router.put("/users/:id/verify", auth, async (req, res) => {
-  if (req.user.role !== "admin") {
-    return res.status(401).json({ msg: "Not authorized" });
-  }
+router.get("/food", auth, isAdmin, async (req, res) => {
+  const foods = await Food.find().populate("donorId", "name email");
+  res.json(foods);
+});
 
-  try {
-    const user = await User.findById(req.params.id);
-    if (!user) {
-      return res.status(404).json({ msg: "User not found" });
-    }
-
-    user.verificationStatus = true;
-    await user.save();
-    res.json(user);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
-  }
+router.get("/requests", auth, isAdmin, async (req, res) => {
+  const reqs = await Request.find()
+    .populate("donorId", "name email")
+    .populate("orphanageId", "name email");
+  res.json(reqs);
 });
 
 module.exports = router;
