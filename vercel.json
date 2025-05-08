@@ -43,6 +43,18 @@
       "dest": "client/donor.html"
     },
     {
+      "src": "/contact.html",
+      "dest": "client/contact.html"
+    },
+    {
+      "src": "/ht.html",
+      "dest": "client/ht.html"
+    },
+    {
+      "src": "/donor.html",
+      "dest": "client/donor.html"
+    },
+    {
       "src": "/orphanage.html",
       "dest": "client/orphanage.html"
     },
