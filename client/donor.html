@@ -11,9 +11,9 @@
     <nav class="navbar">
       <div class="nav-logo">NourishHope</div>
       <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="ht.html">How It Works</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li><a href="index.html" class="btn btn-outline">Home</a></li>
+        <li><a href="ht.html" class="btn btn-outline">How It Works</a></li>
+        <li><a href="contact.html" class="btn btn-outline">Contact</a></li>
       </ul>
       <div class="nav-actions">
         <a href="login.html" class="btn btn-outline">Login / Register</a>
@@ -67,5 +67,14 @@
     </div>
     <script src="js/dashboard.js"></script>
     <script src="js/donor.js"></script>
+    <script>
+      document
+        .querySelector(".btn-outline")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          console.log("Attempting to navigate to:", this.href);
+          window.location.href = this.href;
+        });
+    </script>
   </body>
 </html>
