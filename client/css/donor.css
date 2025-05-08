@@ -1,0 +1,39 @@
+.food-card,
+.money-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.food-card h3,
+.money-card h3 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+.food-card p,
+.money-card p {
+  margin: 8px 0;
+}
+
+.no-donations {
+  text-align: center;
+  padding: 20px;
+  color: #7f8c8d;
+}
+
+.hidden {
+  display: none;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}

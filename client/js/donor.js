@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   let type, id;
+  const token = () => localStorage.getItem("token");
 
   function switchSection(sec) {
     document
@@ -8,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document
       .querySelectorAll(".menu-btn")
       .forEach((b) => b.classList.toggle("active", b.dataset.section === sec));
+    if (sec === "my-donations") fetchMyDonations();
   }
 
   document.getElementById("logoutBtn").onclick = () => {
@@ -21,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchOrphanages() {
     const res = await fetch("/api/orphanages", {
-      headers: { "x-auth-token": localStorage.getItem("token") },
+      headers: { "x-auth-token": token() },
     });
     const list = await res.json();
     const tb = document.querySelector("#orphanageTable tbody");
@@ -52,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const box = document.getElementById("donationForms"),
     form = document.getElementById("donationForm");
-
   document.getElementById("cancelDonation").onclick = () => {
     box.classList.add("hidden");
     form.innerHTML = "";
@@ -64,7 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
     form.innerHTML = "";
     document.getElementById("donationHeader").textContent =
       t === "food" ? "Donate Food" : "Donate Money";
-
     if (t === "food") {
       ["foodType", "quantity", "shelfLife", "pickupLocation"].forEach((f) => {
         const d = document.createElement("div"),
@@ -99,7 +99,6 @@ document.addEventListener("DOMContentLoaded", () => {
       d2.append(l2, ta2);
       form.append(d1, d2);
     }
-
     const btn = document.createElement("button");
     btn.textContent = "Donate";
     btn.type = "submit";
@@ -112,10 +111,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function submitDonation(e) {
     e.preventDefault();
-    const tok = localStorage.getItem("token"),
-      url = "/api/donations/" + type;
+    const url = "/api/donations/" + type;
     const body = { orphanageId: id };
-
     if (type === "food") {
       ["foodType", "quantity", "shelfLife", "pickupLocation"].forEach((f) => {
         body[f] = document.getElementById(f).value;
@@ -124,22 +121,50 @@ document.addEventListener("DOMContentLoaded", () => {
       body.amount = Number(document.getElementById("amount").value);
       body.message = document.getElementById("message").value;
     }
-
     const res = await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": tok,
-      },
+      headers: { "Content-Type": "application/json", "x-auth-token": token() },
       body: JSON.stringify(body),
     });
-
     if (res.ok) {
       alert("Success");
       box.classList.add("hidden");
       form.innerHTML = "";
     } else {
       alert("Failed");
+    }
+  }
+
+  async function fetchMyDonations() {
+    const foodRes = await fetch("/api/food/my-donations", {
+      headers: { "x-auth-token": token() },
+    });
+    const moneyRes = await fetch("/api/donations/money/my-donations", {
+      headers: { "x-auth-token": token() },
+    });
+    const foods = await foodRes.json();
+    const monies = await moneyRes.json();
+    const list = document.getElementById("donationsList");
+    list.innerHTML = "";
+    if (foods.length) {
+      const fs = document.createElement("div");
+      fs.innerHTML = "<h3>Food Donations</h3>";
+      foods.forEach((f) => {
+        const d = document.createElement("div");
+        d.textContent = `${f.quantity} x ${f.foodType} to ${f.orphanageId.name}`;
+        fs.appendChild(d);
+      });
+      list.appendChild(fs);
+    }
+    if (monies.length) {
+      const ms = document.createElement("div");
+      ms.innerHTML = "<h3>Money Donations</h3>";
+      monies.forEach((m) => {
+        const d = document.createElement("div");
+        d.textContent = `₹${m.amount} to ${m.orphanageId.name}`;
+        ms.appendChild(d);
+      });
+      list.appendChild(ms);
     }
   }
 
