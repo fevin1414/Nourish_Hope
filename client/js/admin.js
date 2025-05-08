@@ -34,7 +34,7 @@ document.getElementById("addUserForm").addEventListener("submit", async (e) => {
   try {
     const token = localStorage.getItem("token");
 
-    const res = await fetch("http://localhost:5000/api/admin/addusers", {
+    const res = await fetch("/api/admin/addusers", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -121,7 +121,7 @@ document
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch(`http://localhost:5000/api/admin/users/${id}`, {
+      const res = await fetch(`/api/admin/users/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
