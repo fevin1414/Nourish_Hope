@@ -136,16 +136,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function fetchMyDonations() {
-    const foodRes = await fetch("/api/food/my-donations", {
-      headers: { "x-auth-token": token() },
-    });
-    const moneyRes = await fetch("/api/donations/money/my-donations", {
-      headers: { "x-auth-token": token() },
-    });
-    const foods = await foodRes.json();
-    const monies = await moneyRes.json();
+    const headers = { "x-auth-token": token() };
+    const [foodRes, moneyRes] = await Promise.all([
+      fetch("/api/my-donations/food", { headers }),
+      fetch("/api/my-donations/money", { headers }),
+    ]);
+
+    const [foods, monies] = await Promise.all([
+      foodRes.json(),
+      moneyRes.json(),
+    ]);
     const list = document.getElementById("donationsList");
     list.innerHTML = "";
+
     if (foods.length) {
       const fs = document.createElement("div");
       fs.innerHTML = "<h3>Food Donations</h3>";
@@ -156,6 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       list.appendChild(fs);
     }
+
     if (monies.length) {
       const ms = document.createElement("div");
       ms.innerHTML = "<h3>Money Donations</h3>";

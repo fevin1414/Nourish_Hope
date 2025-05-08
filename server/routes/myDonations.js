@@ -4,7 +4,7 @@ const auth = require("../middleware/auth");
 const Food = require("../models/Food");
 const Donation = require("../models/Donation");
 
-router.get("/food/my-donations", auth, async (req, res) => {
+router.get("/food", auth, async (req, res) => {
   try {
     const foods = await Food.find({ donorId: req.user.id }).populate(
       "orphanageId",
@@ -16,7 +16,7 @@ router.get("/food/my-donations", auth, async (req, res) => {
   }
 });
 
-router.get("/donations/money/my-donations", auth, async (req, res) => {
+router.get("/money", auth, async (req, res) => {
   try {
     const donations = await Donation.find({ donorId: req.user.id }).populate(
       "orphanageId",
