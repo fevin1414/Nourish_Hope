@@ -243,18 +243,23 @@ async function loadAllDonations() {
         const foodCard = document.createElement("div");
         foodCard.className = "food-card";
         foodCard.innerHTML = `
-          <h3>${food.foodType}</h3>
-          <p><strong>Donor:</strong> ${food.donorId.name}</p>
-          <p><strong>Quantity:</strong> ${food.quantity}</p>
-          <p><strong>Shelf Life:</strong> ${new Date(
+          <h3>${food.foodType || "Unknown food type"}</h3>
+          <p><strong>Donor:</strong> ${
+            food.donorId?.name || "[Deleted User]"
+          }</p>
+          <p><strong>Quantity:</strong> ${food.quantity || "N/A"}</p>
+          <p><strong>Shelf Life:</strong> ${
             food.shelfLife
-          ).toLocaleDateString()}</p>
-          <p><strong>Pickup Location:</strong> ${food.pickupLocation}</p>
+              ? new Date(food.shelfLife).toLocaleDateString()
+              : "N/A"
+          }</p>
+          <p><strong>Pickup Location:</strong> ${
+            food.pickupLocation || "Not specified"
+          }</p>
           <p><strong>Status:</strong> <span class="status ${statusClass}">${
-          food.status
+          food.status || "unknown"
         }</span></p>
         `;
-
         donationsList.appendChild(foodCard);
       });
     } else {
@@ -262,7 +267,7 @@ async function loadAllDonations() {
     }
   } catch (err) {
     console.error(err);
-    alert("An error occurred");
+    alert("An error occurred while loading donations");
   }
 }
 
@@ -283,10 +288,14 @@ async function loadAllRequests() {
         const requestCard = document.createElement("div");
         requestCard.className = "request-card";
         requestCard.innerHTML = `
-          <h3>${request.foodId.foodType}</h3>
-          <p><strong>Donor:</strong> ${request.foodId.donorId.name}</p>
-          <p><strong>Orphanage:</strong> ${request.orphanageId.name}</p>
-          <p><strong>Status:</strong> ${request.status}</p>
+          <h3>${request.foodId?.foodType || "Unknown food type"}</h3>
+          <p><strong>Donor:</strong> ${
+            request.foodId?.donorId?.name || "[Deleted User]"
+          }</p>
+          <p><strong>Orphanage:</strong> ${
+            request.orphanageId?.name || "[Deleted Orphanage]"
+          }</p>
+          <p><strong>Status:</strong> ${request.status || "unknown"}</p>
           ${
             request.feedback
               ? `<p><strong>Feedback:</strong> ${request.feedback}</p>`
@@ -298,7 +307,6 @@ async function loadAllRequests() {
               : ""
           }
         `;
-
         allRequestsList.appendChild(requestCard);
       });
     } else {
@@ -306,10 +314,9 @@ async function loadAllRequests() {
     }
   } catch (err) {
     console.error(err);
-    alert("An error occurred");
+    alert("An error occurred while loading requests");
   }
 }
-
 async function verifyUser(userId) {
   try {
     const token = localStorage.getItem("token");
