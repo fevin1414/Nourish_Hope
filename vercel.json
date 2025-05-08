@@ -16,7 +16,39 @@
       "dest": "server/app.js"
     },
     {
-      "handle": "filesystem"
+      "src": "/css/(.*)",
+      "dest": "client/css/$1",
+      "headers": {
+        "Content-Type": "text/css",
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/js/(.*)",
+      "dest": "client/js/$1",
+      "headers": {
+        "Content-Type": "application/javascript"
+      }
+    },
+    {
+      "src": "/(.*\\.(ico|png|jpg|jpeg|svg|gif|webp|woff2))",
+      "dest": "client/$1"
+    },
+    {
+      "src": "/login.html",
+      "dest": "client/login.html"
+    },
+    {
+      "src": "/donor.html",
+      "dest": "client/donor.html"
+    },
+    {
+      "src": "/orphanage.html",
+      "dest": "client/orphanage.html"
+    },
+    {
+      "src": "/admin.html",
+      "dest": "client/admin.html"
     },
     {
       "src": "/(.*)",
