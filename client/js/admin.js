@@ -151,7 +151,7 @@ document
 async function loadAllUsers() {
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch("http://localhost:5000/api/admin/users", {
+    const res = await fetch("/api/admin/users", {
       headers: { "x-auth-token": token },
     });
 
@@ -198,7 +198,7 @@ async function deleteUser(userId) {
 
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000/api/admin/users/${userId}`, {
+    const res = await fetch(`/api/admin/users/${userId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -222,7 +222,7 @@ async function deleteUser(userId) {
 async function loadAllDonations() {
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch("http://localhost:5000/api/food", {
+    const res = await fetch("/api/food", {
       headers: { "x-auth-token": token },
     });
 
@@ -269,7 +269,7 @@ async function loadAllDonations() {
 async function loadAllRequests() {
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch("http://localhost:5000/api/request", {
+    const res = await fetch("/api/request", {
       headers: { "x-auth-token": token },
     });
 
@@ -313,13 +313,10 @@ async function loadAllRequests() {
 async function verifyUser(userId) {
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch(
-      `http://localhost:5000/api/admin/users/${userId}/verify`,
-      {
-        method: "PUT",
-        headers: { "x-auth-token": token },
-      }
-    );
+    const res = await fetch(`api/admin/users/${userId}/verify`, {
+      method: "PUT",
+      headers: { "x-auth-token": token },
+    });
 
     if (res.ok) {
       alert("User verified successfully");

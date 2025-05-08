@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadReceivedFood();
 
   async function loadReceivedFood() {
-    const res = await fetch("http://localhost:5000/api/donations/food", {
+    const res = await fetch("/api/donations/food", {
       headers: { "x-auth-token": token },
     });
     const foods = await res.json();
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function loadReceivedMoney() {
-    const res = await fetch("http://localhost:5000/api/donations/money", {
+    const res = await fetch("/api/donations/money", {
       headers: { "x-auth-token": token },
     });
     const donations = await res.json();

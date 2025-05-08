@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .forEach((b) => (b.onclick = () => switchSection(b.dataset.section)));
 
   async function fetchOrphanages() {
-    const res = await fetch("http://localhost:5000/api/orphanages", {
+    const res = await fetch("/api/orphanages", {
       headers: { "x-auth-token": localStorage.getItem("token") },
     });
     const list = await res.json();
@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function submitDonation(e) {
     e.preventDefault();
     const tok = localStorage.getItem("token"),
-      url = "http://localhost:5000/api/donations/" + type;
+      url = "/api/donations/" + type;
     const body = { orphanageId: id };
 
     if (type === "food") {
