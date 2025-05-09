@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
 const Food = require("../models/Food");
+const Donation = require("../models/Donation");
 
 router.post("/", auth, async (req, res) => {
   if (req.user.role !== "donor")
@@ -19,14 +20,26 @@ router.post("/", auth, async (req, res) => {
 });
 
 router.get("/", auth, async (req, res) => {
-  let foods;
-  if (req.user.role === "donor")
-    foods = await Food.find({ donorId: req.user.id });
-  else if (req.user.role === "orphanage")
-    foods = await Food.find({ status: "available" });
-  else if (req.user.role === "admin")
-    foods = await Food.find().populate("donorId", ["name", "email"]);
-  res.json(foods);
+  try {
+    let foods;
+    let donations;
+
+    if (req.user.role === "donor") {
+      foods = await Food.find({ donorId: req.user.id });
+      donations = await Donation.find({ donorId: req.user.id });
+    } else if (req.user.role === "orphanage") {
+      foods = await Food.find({ status: "available" });
+      donations = await Donation.find(); // or filter by assigned orphanage
+    } else if (req.user.role === "admin") {
+      foods = await Food.find().populate("donorId", ["name", "email"]);
+      donations = await Donation.find().populate("donorId", ["name", "email"]);
+    }
+
+    res.json({ foods, donations });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: "Server error" });
+  }
 });
 
 router.put("/:id", auth, async (req, res) => {
