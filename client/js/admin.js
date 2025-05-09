@@ -200,7 +200,7 @@ async function loadAllDonations() {
     card.className = "food-card";
     card.innerHTML = `
       <h3>${food.foodType}</h3>
-      <p><strong>Donor:</strong> ${food.donorId?.name || "N/A"}</p>
+      <p><strong>Donor:</strong> ${food.donorId?.name || "deleted user"}</p>
       <p><strong>Quantity:</strong> ${food.quantity}</p>
       <p><strong>Pickup:</strong> ${food.pickupLocation}</p>
       <p><strong>Status:</strong> <span class="status ${statusClass}">${
@@ -212,12 +212,12 @@ async function loadAllDonations() {
 
   donations.forEach((m) => {
     const card = document.createElement("div");
-    card.className = "money-card";
+    card.className = "food-card";
     card.innerHTML = `
       <h3>Money Donation</h3>
-      <p><strong>Donor:</strong> ${m.donorId?.name || "N/A"}</p>
+      <p><strong>Donor:</strong> ${m.donorId?.name || "deleted user"}</p>
       <p><strong>Amount:</strong> ₹${m.amount}</p>
-      <p><strong>Message:</strong> ${m.message || "—"}</p>
+      <p><strong>Message:</strong> ${m.message || "No message"}</p>
     `;
     list.appendChild(card);
   });
